@@ -1,0 +1,36 @@
+{
+  "name": "jsstore-encrypt",
+  "version": "1.0.0",
+  "description": "Encrypt your data when storing &amp; decrypt when fetching",
+  "main": "dist/lib.commonjs2.js",
+  "types": "dist/ts/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:dev": "webpack --config webpack.config.js",
+    "test:typescript": "node test/typescript/install.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ujjwalguptaofficial/jsstore-encrypt.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ujjwalguptaofficial/jsstore-encrypt/issues"
+  },
+  "homepage": "https://github.com/ujjwalguptaofficial/jsstore-encrypt#readme",
+  "devDependencies": {
+    "@types/node": "^15.12.4",
+    "copy-webpack-plugin": "^6.1.1",
+    "jsstore": "^4.2.3",
+    "ts-loader": "^7.0.4",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
+  },
+  "peerDependencies": {
+    "jsstore": "^4.2.3"
+  },
+  "dependencies": {
+    "typescript": "^4.3.4"
+  }
+}
