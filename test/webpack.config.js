@@ -1,7 +1,7 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 module.exports = {
-  entry: './src/index.ts',
+  entry: './code/src/index.ts',
   devtool: 'inline-source-map',
   module: {
     rules: [{
@@ -25,7 +25,7 @@ module.exports = {
     new HtmlWebPackPlugin({
       cache: true,
       hash: true,
-      template: './src/index.html',
+      template: './code/index.html',
       minify: {
         collapseWhitespace: true,
         removeComments: true,

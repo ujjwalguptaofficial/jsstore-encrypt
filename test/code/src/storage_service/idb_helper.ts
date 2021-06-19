@@ -58,7 +58,7 @@ export const initJsStore = () => {
     try {
         const dataBase = getDatabase();
         return Promise.all([
-            idbCon.importScripts("/static/jsstore_encrypt.js"),
+            idbCon.importScripts("/code/static/jsstore_encrypt.js"),
             idbCon.addPlugin(encryptPlugin),
             idbCon.initDb(dataBase)
         ]);
