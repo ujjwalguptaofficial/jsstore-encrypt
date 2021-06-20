@@ -1,7 +1,7 @@
 {
   "name": "jsstore-encrypt",
   "version": "1.0.0",
-  "description": "Encrypt your data when storing &amp; decrypt when fetching",
+  "description": "Encrypt your data when storing &amp; decrypt when fetching in IndexedDB",
   "main": "dist/lib.commonjs2.js",
   "types": "dist/ts/index.d.ts",
   "scripts": {
