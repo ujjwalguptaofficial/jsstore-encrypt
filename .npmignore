@@ -1,0 +1,11 @@
+src
+node_modules
+test
+*.tgz
+*.config.js
+examples
+.github
+.git
+
+#definition
+!dist/ts/src
