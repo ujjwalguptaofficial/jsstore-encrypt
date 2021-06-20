@@ -21,7 +21,8 @@
         "moduleResolution": "node",
         "paths": {
 
-        }
+        },
+        "rootDir": "../"
     },
     "exclude": [
         "node_namespaces",
