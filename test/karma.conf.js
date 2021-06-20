@@ -23,7 +23,7 @@ module.exports = function (config) {
         ],
         preprocessors: {
             "**/*.ts": "webpack",
-            "**/*.js": "webpack"
+            // "**/*.js": "webpack"
         },
         webpack: webpackConfig,
         client: {

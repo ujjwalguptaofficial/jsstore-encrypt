@@ -3,6 +3,7 @@ function encryptMiddleware(request, context) {
     const query = request.query;
     const db = context.database;
     const requestName = request.name;
+    debugger;
     if (requestName === "insert") {
         if (!query.encrypt) return;
         const table = db.tables.find(q => q.name === query.into);
