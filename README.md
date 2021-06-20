@@ -48,7 +48,7 @@ save this code in a javascript file. Let's say we have saved inside file name - 
 ### 3. Register jsstore-encrypt.js 
 
 ```
-connection.importScripts("jsstore_encrypt.js", true),
+connection.importScripts("jsstore_encrypt.js"),
 ```
 
 ### 4. Create db schema & mark columns to encrypt

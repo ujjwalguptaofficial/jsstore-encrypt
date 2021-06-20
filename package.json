@@ -1,9 +1,9 @@
 {
   "name": "jsstore-encrypt",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Encrypt your data when storing &amp; decrypt when fetching in IndexedDB",
   "main": "dist/lib.commonjs2.js",
-  "types": "dist/ts/index.d.ts",
+  "types": "dist/ts/src/index.d.ts",
   "scripts": {
     "test": "npm pack && cd test && npm run install:test",
     "webpack": "webpack --config webpack.config.js",
@@ -22,7 +22,6 @@
   },
   "homepage": "https://github.com/ujjwalguptaofficial/jsstore-encrypt#readme",
   "devDependencies": {
-    "@types/chai": "^4.2.19",
     "@types/mocha": "^8.2.2",
     "@types/node": "^15.12.4",
     "copy-webpack-plugin": "^6.1.1",

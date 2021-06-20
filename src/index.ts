@@ -1,4 +1,20 @@
 declare var JsStoreEncrypt;
+
+import { SelectQuery, IColumnOption } from 'jsstore';
+
+declare module "jsstore" {
+    interface IColumnOption {
+        encrypt?: boolean
+    }
+    interface SelectQuery {
+        encrypt?: boolean
+        decrypt?: boolean;
+    }
+    interface IInsertQuery {
+        encrypt?: boolean
+    }
+}
+
 function encryptMiddleware(request, context) {
     const query = request.query;
     const db = context.database;

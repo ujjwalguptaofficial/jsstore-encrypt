@@ -26,8 +26,11 @@ function getConfig(target) {
                 exclude: /node_modules/
             }]
         },
+        externals: {
+            jsstore: 'jsstore',
+        },
         resolve: {
-            extensions: ['.tsx', '.ts', '.js', '.css']
+            extensions: ['.tsx', '.ts', '.js']
         },
         output: {
             path: path.resolve(__dirname, 'dist/'),
