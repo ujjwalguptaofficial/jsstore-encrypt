@@ -6,7 +6,7 @@ module.exports = function (config) {
     config.set({
         basePath: './',
         proxies: {
-            '/code/': '/base/code/',
+            '/src/': '/base/src/',
         },
         frameworks: ["mocha"],
         // frameworks: ["mocha", 'chai'],
@@ -16,7 +16,7 @@ module.exports = function (config) {
             // "src/**/*.ts",
             "specs/index.spec.ts", // *.tsx for React Jsx
             {
-                pattern: 'code/static/*.js',
+                pattern: 'src/static/*.js',
                 included: false,
                 served: true,
             },

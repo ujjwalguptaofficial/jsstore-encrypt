@@ -1,8 +1,6 @@
-import { initJsStore } from "../code/src/index";
 
 import { expect } from "chai";
-import { idbCon } from "../code/src/storage_service/idb_helper";
-import { Student } from "../code/src/model/student";
+import { initJsStore, idbCon } from "../src";
 
 describe("Encrypt decrypt value", () => {
     it("init connection", () => {
@@ -24,7 +22,7 @@ describe("Encrypt decrypt value", () => {
                 gender: "male",
                 name: "ujjwal",
                 secret: "i want to travel the world"
-            } as Student]
+            }]
         } as any).then(results => {
             expect(results).equal(1);
         })
