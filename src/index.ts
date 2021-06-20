@@ -3,7 +3,6 @@ function encryptMiddleware(request, context) {
     const query = request.query;
     const db = context.database;
     const requestName = request.name;
-    debugger;
     if (requestName === "insert") {
         if (!query.encrypt) return;
         const table = db.tables.find(q => q.name === query.into);
@@ -36,12 +35,10 @@ function encryptMiddleware(request, context) {
     }
 
     if (requestName === "select") {
-        debugger;
         if (!query.decrypt) return;
         const table = db.tables.find(q => q.name === query.from);
         const columns = table.columns;
         request.onResult((result) => {
-            debugger;
             return Promise.all(
                 result.map(function (value) {
                     const promises = [];

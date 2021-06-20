@@ -1,20 +1,20 @@
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 // const merge = require('webpack-merge');
-
+const isDev = process.env.NODE_ENV === "development";
 const libraryTarget = [{
     type: "var",
-    name: 'lib.js'
+    name: isDev ? 'lib.js' : 'lib.min.js'
 }, {
     type: "commonjs2",
-    name: 'lib.commonjs2.js'
+    name: isDev ? 'lib.commonjs2.js' : 'lib.commonjs2.min.js'
 }];
 
 function getConfig(target) {
     const baseConfig = {
         entry: './src/index.ts',
         devtool: 'source-map',
-        mode: "development",
+        mode: process.env.NODE_ENV,
         module: {
             rules: [{
                 test: /\.tsx?$/,
@@ -36,11 +36,11 @@ function getConfig(target) {
             libraryTarget: target.type
         },
         plugins: [
-            new CopyPlugin({
-                patterns: [
-                    { from: 'src/middleware.js', to: '' },
-                ],
-            }),
+            // new CopyPlugin({
+            //     patterns: [
+            //         { from: 'src/middleware.js', to: '' },
+            //     ],
+            // }),
         ]
     };
 
