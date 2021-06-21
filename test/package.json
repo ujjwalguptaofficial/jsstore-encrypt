@@ -7,7 +7,7 @@
     "start": "npm run dev",
     "test": "cross-env NODE_ENV=test karma start karma.conf.js",
     "install:test": "npm run install:lib && npm run test",
-    "install:lib": "npm i ../jsstore-encrypt-1.0.1.tgz --no-save"
+    "install:lib": "npm i ../jsstore-encrypt-1.0.2.tgz --no-save"
   },
   "dependencies": {
     "jquery": "^3.4.0"
