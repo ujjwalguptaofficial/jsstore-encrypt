@@ -1,13 +1,11 @@
+import { IInsertQuery, ISelectQuery, IColumnOption } from 'jsstore';
 declare var JsStoreEncrypt;
-
-import { SelectQuery, IColumnOption } from 'jsstore';
 
 declare module "jsstore" {
     interface IColumnOption {
         encrypt?: boolean
     }
-    interface SelectQuery {
-        encrypt?: boolean
+    interface ISelectQuery {
         decrypt?: boolean;
     }
     interface IInsertQuery {
