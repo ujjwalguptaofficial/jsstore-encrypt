@@ -8,6 +8,10 @@ Encrypt your data when storing &amp; decrypt when fetching in IndexedDB
 npm i jsstore-encrypt
 ```
 
+# Examples
+
+https://github.com/ujjwalguptaofficial/jsstore-encrypt/tree/main/examples/
+
 # How to use
 
 ## Setup

@@ -1,6 +1,6 @@
 # Introduction
 
-This is an example of using jsstore with typescript.
+This is an example of using jsstore encrypt with typescript.
 
 # How to run
 
