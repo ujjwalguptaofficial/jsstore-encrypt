@@ -66,6 +66,69 @@ describe("Encrypt decrypt value", () => {
     })
 
 
+    it("update data without encrypt", () => {
+        const value = {
+            city: "bangalore",
+            country: "india",
+            gender: "male",
+            name: "ujjwal",
+            secret: "i want to travel the world"
+        };
+        return idbCon.update({
+            in: "Students",
+            set: value,
+            where: {
+                id: 1
+            }
+        } as any).then(results => {
+            expect(results).equal(1);
+            return idbCon.select({
+                from: "Students",
+                where: {
+                    id: 1
+                }
+            } as any).then((results: any[]) => {
+                expect(results).length(1);
+                expect(results[0].secret).equal("i want to travel the world");
+                expect(results[0].name).equal(value.name);
+                expect(results[0].city).equal(value.city);
+                expect(results[0].country).equal(value.country);
+                expect(results[0].gender).equal(value.gender);
+            })
+        })
+    })
 
+    it("update data with encrypt", () => {
+        const value = {
+            city: "bangalore",
+            country: "india",
+            gender: "male",
+            name: "ujjwal",
+            secret: "i want to travel the world"
+        };
+        return idbCon.update({
+            in: "Students",
+            encrypt: true,
+            set: value,
+            where: {
+                id: 1
+            }
+        } as any).then(results => {
+            expect(results).equal(1);
+            return idbCon.select({
+                from: "Students",
+                where: {
+                    id: 1
+                }
+            } as any).then((results: any[]) => {
+                expect(results).length(1);
+                expect(results[0].secret).not.equal("i want to travel the world");
+                expect(results[0].name).equal(value.name);
+                expect(results[0].city).equal(value.city);
+                expect(results[0].country).equal(value.country);
+                expect(results[0].gender).equal(value.gender);
+            })
+        })
+    })
 
 })

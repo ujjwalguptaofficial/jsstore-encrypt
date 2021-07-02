@@ -1,4 +1,4 @@
-import { IInsertQuery, ISelectQuery, IColumnOption } from 'jsstore';
+import { IInsertQuery, ISelectQuery, IColumnOption, IUpdateQuery } from 'jsstore';
 declare var JsStoreEncrypt;
 
 declare module "jsstore" {
@@ -11,41 +11,48 @@ declare module "jsstore" {
     interface IInsertQuery {
         encrypt?: boolean
     }
+    interface IUpdateQuery {
+        encrypt?: boolean
+    }
 }
 
 function encryptMiddleware(request, context) {
     const query = request.query;
     const db = context.database;
     const requestName = request.name;
-    if (requestName === "insert") {
-        if (!query.encrypt) return;
-        const table = db.tables.find(q => q.name === query.into);
+    if (["insert", "update"].indexOf(requestName) >= 0 && query.encrypt) {
+        const tableName = requestName === "insert" ? query.into : query.in;
+        const table = db.tables.find(q => q.name === tableName);
         const columns = table.columns;
-        return Promise.all(
-            query.values.map(function (value) {
-                const promises = [];
-                const columnNames = [];
-                for (const columnName in value) {
-                    const columnValue = value[columnName];
-                    if (columnValue != null && columns[columnName].encrypt) {
-                        let promiseResult = JsStoreEncrypt.encrypt(columnValue)
-                        if (!promiseResult || !promiseResult.then) {
-                            promiseResult = Promise.resolve(promiseResult);
-                        }
-                        columnNames.push(columnName);
-                        promises.push(promiseResult);
+        const encryptValue = (value) => {
+            const promises = [];
+            const columnNames = [];
+            for (const columnName in value) {
+                const columnValue = value[columnName];
+                if (columnValue != null && columns[columnName].encrypt) {
+                    let promiseResult = JsStoreEncrypt.encrypt(columnValue)
+                    if (!promiseResult || !promiseResult.then) {
+                        promiseResult = Promise.resolve(promiseResult);
                     }
+                    columnNames.push(columnName);
+                    promises.push(promiseResult);
                 }
-                return Promise.all(promises).then(columnsValue => {
-                    let obj = {};
-                    columnsValue.forEach((item, index) => {
-                        obj[columnNames[index]] = item;
-                    });
-                    obj = Object.assign(value, obj)
-                    return obj;
-                })
+            }
+            return Promise.all(promises).then(columnsValue => {
+                let obj = {};
+                columnsValue.forEach((item, index) => {
+                    obj[columnNames[index]] = item;
+                });
+                obj = Object.assign(value, obj)
+                return obj;
             })
-        );
+        }
+        if (requestName === "insert") {
+            return Promise.all(
+                query.values.map(encryptValue)
+            );
+        }
+        return encryptValue(query.set);
     }
 
     if (requestName === "select") {
