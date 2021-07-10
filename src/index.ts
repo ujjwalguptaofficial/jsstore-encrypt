@@ -48,11 +48,15 @@ function encryptMiddleware(request, context) {
             })
         }
         if (requestName === "insert") {
-            return Promise.all(
-                query.values.map(encryptValue)
-            );
+            return request.beforeExecute(_ => {
+                return Promise.all(
+                    query.values.map(encryptValue)
+                );
+            })
         }
-        return encryptValue(query.set);
+        return request.beforeExecute(_ => {
+            return encryptValue(query.set);
+        })
     }
 
     if (requestName === "select") {
@@ -91,9 +95,21 @@ function encryptMiddleware(request, context) {
 };
 export const encryptPlugin = {
     setup(connection, url) {
+        const urls: any[] = [];
+        if (url) {
+            if (typeof url === "string") {
+                urls.push(url as string);
+            }
+            else if (typeof url === "function") {
+                const blob = new Blob([encryptMiddleware.toString()], { type: "application/javascript; charset=utf-8" });
+                const blobUrl = URL.createObjectURL(blob);
+                urls.push(blobUrl);
+            }
+        }
         const blob = new Blob([encryptMiddleware.toString()], { type: "application/javascript; charset=utf-8" });
         const blobUrl = URL.createObjectURL(blob);
-        return connection.importScripts(blobUrl).then(function () {
+        urls.push(blobUrl);
+        return connection.importScripts(...urls).then(function () {
             return connection.addMiddleware("encryptMiddleware", true);
         })
     }

@@ -5,7 +5,7 @@ import { initJsStore, idbCon } from "../src";
 describe("Encrypt decrypt value", () => {
     it("init connection", () => {
         return initJsStore().then(results => {
-            expect(results[2]).equal(true);
+            expect(results[1]).equal(true);
             // return new Promise((res) => {
             //     setTimeout(res, 2000);
             // })
