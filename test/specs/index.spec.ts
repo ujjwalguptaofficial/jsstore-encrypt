@@ -65,6 +65,29 @@ describe("Encrypt decrypt value", () => {
         })
     })
 
+    it("select data without decrypt & where on non encrypted column", () => {
+        return idbCon.select({
+            from: "Students",
+            where: {
+                name: "ujjwal",
+            }
+        } as any).then((results: any[]) => {
+            expect(results).length(2);
+        })
+    })
+
+    it("select data with decrypt & where on non encrypted column", () => {
+        return idbCon.select({
+            from: "Students",
+            decrypt: true,
+            where: {
+                name: "ujjwal",
+            }
+        } as any).then((results: any[]) => {
+            expect(results).length(2);
+        })
+    })
+
 
     it("update data without encrypt", () => {
         const value = {
