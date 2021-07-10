@@ -1,4 +1,5 @@
-import { IInsertQuery, ISelectQuery, IColumnOption, IUpdateQuery } from 'jsstore';
+import { IInsertQuery, ISelectQuery, IColumnOption, IUpdateQuery, QUERY_OPTION } from 'jsstore';
+import { WhereEncrypter } from './where_encrypter';
 declare var JsStoreEncrypt;
 
 declare module "jsstore" {
@@ -63,6 +64,12 @@ function encryptMiddleware(request, context) {
         if (!query.decrypt) return;
         const table = db.tables.find(q => q.name === query.from);
         const columns = table.columns;
+        const where = query.where;
+        if (where) {
+            request.beforeExecute(_ => {
+                new WhereEncrypter(where).encrypt(columns);
+            })
+        }
         request.onResult((result) => {
             return Promise.all(
                 result.map(function (value) {
