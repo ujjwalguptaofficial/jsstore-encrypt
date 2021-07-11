@@ -48,6 +48,7 @@ describe("Encrypt decrypt value", () => {
             from: "Students",
         } as any).then((results: any[]) => {
             expect(results).length(2);
+            debugger;
             expect(results[0].secret).not.equal("i want to travel the world");
             expect(results[1].secret).equal("i want to travel the world");
         })
@@ -61,7 +62,10 @@ describe("Encrypt decrypt value", () => {
         } as any).then((results: any[]) => {
             expect(results).length(2);
             expect(results[0].secret).equal("i want to travel the world");
-            expect(results[1].secret).not.equal("i want to travel the world");
+
+            expect(
+                results[1].secret != "i want to travel the world"
+            ).not.equal(true);
         })
     })
 
@@ -85,6 +89,18 @@ describe("Encrypt decrypt value", () => {
             }
         } as any).then((results: any[]) => {
             expect(results).length(2);
+        })
+    })
+
+    it("select data with decrypt & where on encrypted column", () => {
+        return idbCon.select({
+            from: "Students",
+            decrypt: true,
+            where: {
+                secret: "i want to travel the world"
+            }
+        } as any).then((results: any[]) => {
+            expect(results).length(1);
         })
     })
 

@@ -1,1 +1,0 @@
-export * from "./get_data_type";

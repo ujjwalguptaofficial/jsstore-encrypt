@@ -50,7 +50,7 @@ module.exports = function (config) {
             }
         },
         autoWatch: false,
-        singleRun: false,
+        singleRun: true,
         concurrency: Infinity,
         browserNoActivityTimeout: 20000,
     });
