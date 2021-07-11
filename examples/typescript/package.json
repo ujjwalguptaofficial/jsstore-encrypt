@@ -8,8 +8,8 @@
   },
   "dependencies": {
     "jquery": "^3.4.0",
-    "jsstore": "^4.2.6",
-    "jsstore-encrypt": "^1.0.2"
+    "jsstore": "^4.3.6",
+    "jsstore-encrypt": "^1.1.2"
   },
   "devDependencies": {
     "css-loader": "^0.28.11",

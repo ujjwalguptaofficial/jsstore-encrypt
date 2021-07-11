@@ -32,7 +32,8 @@ export class StudentService extends BaseService {
             from: 'Students',
             where: {
                 id: studentId
-            }
+            },
+            decrypt: true
         });
     }
 
@@ -42,7 +43,8 @@ export class StudentService extends BaseService {
             set: value,
             where: {
                 id: studentId
-            }
+            },
+            encrypt: true
         });
     }
 }
