@@ -1,6 +1,6 @@
 
 import { expect } from "chai";
-import { initJsStore, idbCon } from "../src";
+import { initJsStore, idbCon, openConnection } from "../src";
 
 describe("Encrypt decrypt value", () => {
     it("init connection", () => {
@@ -231,6 +231,12 @@ describe("Encrypt decrypt value", () => {
             }
         } as any).then((results) => {
             expect(results).equal(1);
+        })
+    })
+
+    it("select data without any query", () => {
+        return idbCon.select(null as any).catch(err => {
+            expect(err.message).to.equal("Cannot read property 'from' of null")
         })
     })
 

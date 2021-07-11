@@ -5,7 +5,7 @@ declare var JsStoreEncrypt;
 
 
 export function jsstoreEncryptMiddleware(request, context) {
-    const query = request.query;
+    const query = request.query || {};
     const encryptDecrypt = query.encrypt || query.decrypt;
     if (!encryptDecrypt) return;
     const where = encryptDecrypt.where;

@@ -63,4 +63,6 @@ export const initJsStore = () => {
     ]);
 };
 
+ 
+
 window['con'] = idbCon;
