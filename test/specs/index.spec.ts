@@ -63,8 +63,8 @@ describe("Encrypt decrypt value", () => {
             expect(results[0].secret).equal("i want to travel the world");
 
             expect(
-                results[1].secret != "i want to travel the world"
-            ).not.equal(true);
+                results[1].secret
+            ).not.equal("i want to travel the world");
         })
     })
 
