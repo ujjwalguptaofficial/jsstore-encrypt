@@ -20,7 +20,7 @@ https://github.com/ujjwalguptaofficial/jsstore-encrypt/tree/main/examples/
 
 ## Setup
 
-### 1. Create your encrypt decrypt method
+### 1. Define your encrypt decrypt method
 
 ```
 importScripts("https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js")
@@ -42,7 +42,9 @@ var JsStoreEncrypt = {
 
 save this code in a javascript file. Let's say we have saved inside file name - `jsstore-encrypt.js`
 
-#### Important points -
+This code will be used to encrypt decrypt the value. `jsstore-encrypt` search for object `JsStoreEncrypt` and then use `encrypt`, `decrypt` method, so its important that you follow this pattern.
+
+#### 👉 Important points -
 
 * Above code uses cryptojs AES algorithm. But you can use any library or algorithm.
 * If your code is asychronous, you can return promise.

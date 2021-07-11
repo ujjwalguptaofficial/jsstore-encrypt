@@ -148,7 +148,7 @@ export function jsstoreEncryptMiddleware(request, context) {
                     for (const columnName in value) {
                         const columnValue = value[columnName];
                         if (columnValue != null && columns[columnName].encrypt) {
-                            let promiseResult = JsStoreEncrypt.decrypt(columnValue)
+                            let promiseResult = decryptValue(columnValue)
                             if (!promiseResult || !promiseResult.then) {
                                 promiseResult = Promise.resolve(promiseResult);
                             }

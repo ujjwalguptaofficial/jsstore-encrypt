@@ -120,6 +120,35 @@ describe("Encrypt decrypt value", () => {
         })
     })
 
+    it("count data with decrypt & where on encrypted column", () => {
+        return idbCon.count({
+            from: "Students",
+            decrypt: {
+                where: {
+                    secret: "i want to travel the world"
+                }
+            }
+        } as any).then((results) => {
+            expect(results).to.equal(1);
+        })
+    })
+
+    it("count data with decrypt & where on encrypted column with another non encrypted column", () => {
+        return idbCon.count({
+            from: "Students",
+            decrypt: {
+                where: {
+                    secret: "i want to travel the world"
+                }
+            },
+            where: {
+                name: 'ujjwal'
+            }
+        } as any).then((results) => {
+            expect(results).to.equal(1);
+        })
+    })
+
 
     it("update data without encrypt", () => {
         const value = {
