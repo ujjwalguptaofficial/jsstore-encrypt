@@ -1,6 +1,8 @@
-# INTRODUCTION
+# Introduction
 
 Encrypt your data when storing &amp; decrypt when fetching in IndexedDB
+
+It is a jsstore plugin which register a [middleware](https://jsstore.net/tutorial/middleware/). The middleware encrypt or decrypt values based on query. 
 
 # Install
 
@@ -16,16 +18,7 @@ https://github.com/ujjwalguptaofficial/jsstore-encrypt/tree/main/examples/
 
 ## Setup
 
-### 1. Register plugin
-
-```
-import { encryptPlugin } from "jsstore-encrypt";
-
-var connection = new JsStore.Connection();
-connection.addPlugin(encryptPlugin);
-```
-
-### 2. Create your encrypt decrypt method
+### 1. Create your encrypt decrypt method
 
 ```
 importScripts("https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js")
@@ -49,13 +42,16 @@ save this code in a javascript file. Let's say we have saved inside file name - 
 * Above code uses cryptojs AES algorithm. But you can use any library or algorithm.
 * If your code is asychronous, you can return promise.
 
-### 3. Register jsstore-encrypt.js 
+### 2. Register plugin
 
 ```
-connection.importScripts("jsstore_encrypt.js"),
+import { encryptPlugin } from "jsstore-encrypt";
+
+var connection = new JsStore.Connection();
+connection.addPlugin(encryptPlugin, "path to jsstore_encrypt.js");
 ```
 
-### 4. Create db schema & mark columns to encrypt
+### 3. Create db schema & mark columns to encrypt
 
 ```
 const tblStudent = {
@@ -69,18 +65,6 @@ const tblStudent = {
             notNull: true,
             dataType: DATA_TYPE.String
         },
-        gender: {
-            dataType: DATA_TYPE.String,
-            default: 'male'
-        },
-        country: {
-            notNull: true,
-            dataType: DATA_TYPE.String
-        },
-        city: {
-            dataType: DATA_TYPE.String,
-            notNull: true
-        },
         secret: {
             dataType: DATA_TYPE.String,
             encrypt: true
@@ -93,9 +77,9 @@ const dataBase: IDataBase = {
 };
 ```
 
-In the above schema, column `secret` is marked to be encrypted. So only column secret will be encrypted. 
+In the above schema, column `secret` is marked to be encrypted. So only column secret will be encrypted when inserted or updated & decrypted when selecting. 
 
-## Encrypt data when storing
+## Insert data
 
 ```
 connection.insert({
@@ -111,7 +95,9 @@ connection.insert({
 })
 ```
 
-## Decrypt data when fetching
+The `encrypt` option tells jsstore-encrypt to encrypt the values. Only column marked with `ecnrypt` in the database schema will be encrypted - in our case `secret`.
+
+## Select data
 
 ```
 connection.select({
@@ -119,3 +105,56 @@ connection.select({
     decrypt: true,
 })
 ```
+
+The `decrypt` option tells jsstore-decrypt to decrypt the values. Only column marked with `ecnrypt` will be decrypted - in our case `secret` column only.
+
+## Update data
+
+```
+connection.update({
+    in: "Students",
+    encrypt: true,
+    set:{
+        name:'Ujjwal Gupta',
+        secret:"Being more human"
+    }
+})
+```
+
+In case of update, `set` values are encrypted.
+
+## Where (Filter)
+
+In order to work `where` - the encrypt algorithm should generate the same value always, so that we can encrypt a value and search in stored values.
+
+```
+connection.select({
+    from: "Students",
+    decrypt: {
+        where:{
+          secret:"Being more human"
+        }
+    }
+})
+```
+
+When you add `where` inside decrypt/encrypt, all values inside where are encrypted.
+
+👉 You can also use your normal field without encrypt option similar to how you were using before - 
+
+```
+connection.select({
+    from: "Students",
+    decrypt: {
+        where:{
+          secret:"Being more human"
+        }
+    },
+    where:{
+        id:1
+    }
+})
+```
+
+Note:- Partial where option - `regex`, `like` etc doesn't work in case of encryption as the values are stored as different data.
+
