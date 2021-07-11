@@ -186,4 +186,52 @@ describe("Encrypt decrypt value", () => {
         })
     })
 
+    it("update data with encrypt and where on encrypted column", () => {
+        const value = {
+            city: "bangalore",
+            country: "india",
+            gender: "male",
+            name: "ujjwal",
+            secret: "i want to travel the world"
+        };
+        return idbCon.update({
+            in: "Students",
+            encrypt: {
+                where: {
+                    secret: "i want to travel the world"
+                }
+            },
+            set: value,
+
+        } as any).then(results => {
+            expect(results).equal(1);
+            return idbCon.select({
+                from: "Students",
+                where: {
+                    id: 1
+                }
+            } as any).then((results: any[]) => {
+                expect(results).length(1);
+                expect(results[0].secret).not.equal("i want to travel the world");
+                expect(results[0].name).equal(value.name);
+                expect(results[0].city).equal(value.city);
+                expect(results[0].country).equal(value.country);
+                expect(results[0].gender).equal(value.gender);
+            })
+        })
+    })
+
+    it("remove data with decrypt & where on encrypted column", () => {
+        return idbCon.remove({
+            from: "Students",
+            decrypt: {
+                where: {
+                    secret: "i want to travel the world"
+                }
+            }
+        } as any).then((results) => {
+            expect(results).equal(1);
+        })
+    })
+
 })
