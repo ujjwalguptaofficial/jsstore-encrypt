@@ -94,7 +94,6 @@ export function jsstoreEncryptMiddleware(request, context) {
         for (let columnName in where) {
             const whereColumnValue = where[columnName];
             const column = columns[columnName];
-            debugger;
             if (column == null || !column.encrypt) break;
 
             if (getDataType(whereColumnValue) === "object") {
@@ -124,12 +123,13 @@ export function jsstoreEncryptMiddleware(request, context) {
         if (!query.decrypt) return;
         const table = db.tables.find(q => q.name === query.from);
         const columns = table.columns;
-        const where = query.where;
+        const where = query.decrypt.where;
         if (where) {
-            debugger;
-            // request.beforeExecute(_ => {
-            encryptWhere(where, columns);
-            // })
+            request.beforeExecute(_ => {
+                encryptWhere(where, columns);
+                query.where = query.where || {};
+                Object.assign(query.where, where);
+            })
         }
         request.onResult((result) => {
             return Promise.all(
