@@ -1,3 +1,5 @@
+[![npm version](https://badge.fury.io/js/jsstore-encrypt.svg)](https://badge.fury.io/js/jsstore-encrypt)
+[![TEST](https://github.com/ujjwalguptaofficial/jsstore-encrypt/actions/workflows/main.yml/badge.svg)](https://github.com/ujjwalguptaofficial/jsstore-encrypt/actions/workflows/main.yml)
 # Introduction
 
 Encrypt your data when storing &amp; decrypt when fetching in IndexedDB
@@ -22,14 +24,17 @@ https://github.com/ujjwalguptaofficial/jsstore-encrypt/tree/main/examples/
 
 ```
 importScripts("https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js")
-var secret = "secret";
+
+var secret = CryptoJS.enc.Hex.parse('000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f');
 
 var JsStoreEncrypt = {
     encrypt(message) {
-       return CryptoJS.AES.encrypt(message, secret).toString();
+        const data = CryptoJS.AES.encrypt(message, secret, { mode: CryptoJS.mode.ECB }).toString();
+        console.log("data", data);
+        return data;
     },
     decrypt(message) {
-        var decryptedBytes = CryptoJS.AES.decrypt(message, secret);
+        var decryptedBytes = CryptoJS.AES.decrypt(message, secret, { mode: CryptoJS.mode.ECB });
         return decryptedBytes.toString(CryptoJS.enc.Utf8);
     }
 }
@@ -41,6 +46,7 @@ save this code in a javascript file. Let's say we have saved inside file name - 
 
 * Above code uses cryptojs AES algorithm. But you can use any library or algorithm.
 * If your code is asychronous, you can return promise.
+* In order to query using `where` - the encrypt algorithm should generate the same value always, so that we can encrypt a value and search in stored values.
 
 ### 2. Register plugin
 
@@ -125,7 +131,7 @@ In case of update, `set` values are encrypted.
 
 ## Where (Filter)
 
-In order to work `where` - the encrypt algorithm should generate the same value always, so that we can encrypt a value and search in stored values.
+In order to filter data using `where` - the encrypt algorithm should generate the same value always, so that we can encrypt a value and search in stored values.
 
 ```
 connection.select({
