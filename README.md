@@ -22,7 +22,7 @@ https://github.com/ujjwalguptaofficial/jsstore-encrypt/tree/main/examples/
 
 ### 1. Define your encrypt decrypt method
 
-```
+```javascript 
 importScripts("https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js")
 
 var secret = CryptoJS.enc.Hex.parse('000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f');
@@ -52,7 +52,7 @@ This code will be used to encrypt decrypt the value. `jsstore-encrypt` search fo
 
 ### 2. Register plugin
 
-```
+```javascript 
 import { encryptPlugin } from "jsstore-encrypt";
 
 var connection = new JsStore.Connection();
@@ -61,7 +61,7 @@ connection.addPlugin(encryptPlugin, "path to jsstore_encrypt.js");
 
 ### 3. Create db schema & mark columns to encrypt
 
-```
+```javascript 
 const tblStudent = {
     name: 'Students',
     columns: {
@@ -89,7 +89,7 @@ In the above schema, column `secret` is marked to be encrypted. So only column s
 
 ## Insert data
 
-```
+```javascript 
 connection.insert({
     into: "Students",
     values: [{
@@ -107,7 +107,7 @@ The `encrypt` option tells jsstore-encrypt to encrypt the values. Only column ma
 
 ## Select data
 
-```
+```javascript 
 connection.select({
     from: "Students",
     decrypt: true,
@@ -118,7 +118,7 @@ The `decrypt` option tells jsstore-decrypt to decrypt the values. Only column ma
 
 ## Update data
 
-```
+```javascript 
 connection.update({
     in: "Students",
     encrypt: true,
@@ -135,7 +135,7 @@ In case of update, `set` values are encrypted.
 
 In order to filter data using `where` - the encrypt algorithm should generate the same value always, so that we can encrypt a value and search in stored values.
 
-```
+```javascript 
 connection.select({
     from: "Students",
     decrypt: {
@@ -150,7 +150,7 @@ When you add `where` inside decrypt/encrypt, all values inside where are encrypt
 
 👉 You can also use your normal field without encrypt option similar to how you were using before - 
 
-```
+```javascript 
 connection.select({
     from: "Students",
     decrypt: {
