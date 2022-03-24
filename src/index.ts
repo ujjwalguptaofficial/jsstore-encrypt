@@ -1,12 +1,21 @@
 import { jsstoreEncryptMiddleware } from "./middleware";
-import { IInsertQuery, ISelectQuery, IColumnOption, IUpdateQuery, IRemoveQuery, QUERY_OPTION, DATA_TYPE } from 'jsstore';
+import {
+    IInsertQuery,
+    ISelectQuery,
+    IColumnOption,
+    IUpdateQuery,
+    IRemoveQuery,
+    IWhereQuery,
+    QUERY_OPTION,
+    DATA_TYPE
+} from 'jsstore';
 
 declare module "jsstore" {
     interface IColumnOption {
         encrypt?: boolean
     }
     interface ISelectQuery {
-        decrypt?: boolean;
+        decrypt?: boolean  | {where?: IWhereQuery | IWhereQuery[]};
     }
     interface IInsertQuery {
         encrypt?: boolean
@@ -15,7 +24,7 @@ declare module "jsstore" {
         encrypt?: boolean
     }
     interface IRemoveQuery {
-        decrypt?: boolean;
+        decrypt?: boolean | {where?: IWhereQuery | IWhereQuery[]};
     }
 }
 export const encryptPlugin = {
