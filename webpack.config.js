@@ -35,7 +35,7 @@ function getConfig(target) {
         output: {
             path: path.resolve(__dirname, 'dist/'),
             filename: target.name,
-            library: 'JsStore',
+            library: 'JsStoreEncrypt',
             libraryTarget: target.type
         },
         plugins: [
