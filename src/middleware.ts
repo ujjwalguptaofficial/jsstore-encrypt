@@ -10,24 +10,28 @@ export function jsstoreEncryptMiddleware(request, context) {
     if (!encryptDecrypt) return;
     const where = encryptDecrypt.where;
     function encryptWhere(where: object, columns) {
-
         const encryptIn = (column) => {
+            const encryptInPromises = [];
             (where[column][QUERY_OPTION.In] as any[]).forEach((value, i) => {
-                where[column][QUERY_OPTION.In][i] = encryptValue(value)
+                encryptInPromises.push(encryptValue(value).then(v => where[column][QUERY_OPTION.In][i] = v));
             });
+            return encryptInPromises;
         }
 
         const checkComparisionOp_ = (column, symbol) => {
             const compareValue = this.where[column][symbol];
+            const checkComparisionOp_Promises = [];
             if (symbol != QUERY_OPTION.Between) {
-                where[column][symbol] = encryptValue(compareValue);
+                checkComparisionOp_Promises.push(encryptValue(compareValue).then(value => where[column][symbol] = value));
             }
             else {
-                where[column][symbol].low = encryptValue(compareValue.low);
-                where[column][symbol].high = encryptValue(compareValue.high);
+                checkComparisionOp_Promises.push(encryptValue(compareValue.low).then(value => where[column][symbol].low = value));
+                checkComparisionOp_Promises.push(encryptValue(compareValue.high).then(value => where[column][symbol].high = value));
             }
+            return checkComparisionOp_Promises;
         }
 
+        const promises = [];
         for (let columnName in where) {
             const whereColumnValue = where[columnName];
             const column = columns[columnName];
@@ -38,7 +42,7 @@ export function jsstoreEncryptMiddleware(request, context) {
 
                     switch (key) {
                         case QUERY_OPTION.In:
-                            encryptIn(columnName);
+                            promises.push(encryptIn(columnName));
                             break;
                         case QUERY_OPTION.Between:
                         case QUERY_OPTION.GreaterThan:
@@ -46,26 +50,33 @@ export function jsstoreEncryptMiddleware(request, context) {
                         case QUERY_OPTION.GreaterThanEqualTo:
                         case QUERY_OPTION.LessThanEqualTo:
                         case QUERY_OPTION.NotEqualTo:
-                            checkComparisionOp_(columnName, key);
+                            promises.push(checkComparisionOp_(columnName, key));
                     }
                 }
             }
             else {
-                where[columnName] = encryptValue(whereColumnValue);
+                promises.push(encryptValue(whereColumnValue).then(value => where[columnName] = value));
             }
         }
+        return Promise.all(promises);
     }
     if (where) {
-        request.beforeExecute(_ => {
-            encryptWhere(where, columns);
-            query.where = query.where || {};
-            Object.assign(query.where, where);
+        request.beforeExecute( _ => {
+            return encryptWhere(where, columns)
+                .then(() => {
+                    query.where = query.where || {};
+                    Object.assign(query.where, where);
+                });
         })
     }
     const db = context.database;
     const requestName = request.name;
     const encryptValue = (value: string) => {
-        return JsStoreEncrypt.encrypt(value);
+        let result = JsStoreEncrypt.encrypt(value);
+        if (!result || !result.then) {
+            result = Promise.resolve(result);
+        }
+        return result;
     }
 
     const decryptValue = (value: string) => {
@@ -169,4 +180,4 @@ export function jsstoreEncryptMiddleware(request, context) {
         })
     }
 
-};
+}

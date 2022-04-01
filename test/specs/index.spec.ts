@@ -1,6 +1,6 @@
 
 import { expect } from "chai";
-import { initJsStore, idbCon, openConnection } from "../src";
+import { initJsStore, idbCon } from "../src";
 
 describe("Encrypt decrypt value", () => {
     it("init connection", () => {
