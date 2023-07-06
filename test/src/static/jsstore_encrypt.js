@@ -12,11 +12,21 @@ var JsStoreEncrypt = {
     // }
     encrypt(message) {
         const data = CryptoJS.AES.encrypt(message, secret, { mode: CryptoJS.mode.ECB }).toString();
-        console.log("data", data);
-        return data;
+        // console.log("data", data);
+        return new Promise(res => {
+            setTimeout(() => {
+                res(data);
+            }, 100);
+        });
     },
     decrypt(message) {
         var decryptedBytes = CryptoJS.AES.decrypt(message, secret, { mode: CryptoJS.mode.ECB });
-        return decryptedBytes.toString(CryptoJS.enc.Utf8);
+        const result = decryptedBytes.toString(CryptoJS.enc.Utf8);
+
+        return new Promise(res => {
+            setTimeout(() => {
+                res(result);
+            }, 100);
+        });
     }
 }
